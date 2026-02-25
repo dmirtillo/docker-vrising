@@ -29,8 +29,19 @@ RUN mkdir -pm755 /etc/apt/keyrings && \
         winehq-stable && \
     rm -rf /var/lib/apt/lists/*
 
-# 3. Install remaining dependencies and SteamCMD
-FROM wine-setup AS final
+# 3. Install latest winetricks from source
+FROM wine-setup AS winetricks-setup
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends wget ca-certificates && \
+    (cd "$(mktemp -d)" && \
+    echo '#!/bin/sh\n\ncd "$(mktemp -d)"\nwget https://raw.githubusercontent.com/Winetricks/winetricks/master/src/winetricks\nwget https://raw.githubusercontent.com/Winetricks/winetricks/master/src/winetricks.bash-completion\nchmod +x winetricks\nmv winetricks /usr/bin\nmv winetricks.bash-completion /usr/share/bash-completion/completions/winetricks' > update_winetricks && \
+    chmod +x update_winetricks && \
+    mv update_winetricks /usr/bin/ && \
+    /usr/bin/update_winetricks) && \
+    rm -rf /var/lib/apt/lists/*
+
+# 4. Install remaining dependencies and SteamCMD
+FROM winetricks-setup AS final
 RUN add-apt-repository multiverse && \
     apt-get update && \
     echo steam steam/question select "I AGREE" | debconf-set-selections && \
@@ -42,7 +53,6 @@ RUN add-apt-repository multiverse && \
         xvfb \
         xserver-xorg \
         winbind \
-        winetricks \
         libgl1-mesa-dri:i386 \
         libgl1:i386 \
         steam \
