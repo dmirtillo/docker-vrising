@@ -1,20 +1,24 @@
 schema: spec-driven
 
-# Project context (optional)
-# This is shown to AI when creating artifacts.
-# Add your tech stack, conventions, style guides, domain knowledge, etc.
-# Example:
-#   context: |
-#     Tech stack: TypeScript, React, Node.js
-#     We use conventional commits
-#     Domain: e-commerce platform
+context:
+  project:
+    name: "docker-vrising"
+    description: "A Dockerized V Rising dedicated server running on Ubuntu 22.04 with Wine."
+    purpose: "To provide a containerized, easy-to-deploy environment for hosting V Rising dedicated servers."
+  tech_stack:
+    base_image: "Ubuntu 22.04"
+    runtime: "Wine"
+    dependencies:
+      - "SteamCMD"
+      - "Xvfb"
+      - "winetricks"
+    containerization: "Docker"
+    orchestration: "Docker Compose"
+    scripting: "Bash"
 
-# Per-artifact rules (optional)
-# Add custom rules for specific artifacts.
-# Example:
-#   rules:
-#     proposal:
-#       - Keep proposals under 500 words
-#       - Always include a "Non-goals" section
-#     tasks:
-#       - Break tasks into chunks of max 2 hours
+rules:
+  - "Ensure all shell scripts (e.g., start.sh) use LF line endings to prevent execution errors in the container."
+  - "Maintain compatibility with Wine to ensure the V Rising Windows server executable runs correctly on Linux."
+  - "Preserve persistent data (saves, settings) using Docker volumes mounted at /mnt/vrising/persistentdata."
+  - "Optimize Docker image size where possible by cleaning up apt caches and temporary files in the same layer."
+  - "Expose necessary UDP ports (default 9876, 9877) for game client connectivity."

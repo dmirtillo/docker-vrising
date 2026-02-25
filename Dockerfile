@@ -1,39 +1,48 @@
 FROM ubuntu:22.04 
 LABEL maintainer="Tim Chaubet"
-VOLUME ["/mnt/vrising/server", "/mnt/vrising/persistentdata"]
 
 ARG DEBIAN_FRONTEND="noninteractive"
-RUN apt update -y && \
+
+# 1. Install all dependencies, setup users, and clean up in one layer
+RUN apt-get update && \
     apt-get upgrade -y && \
-    apt-get install -y  apt-utils && \
-    apt-get install -y  software-properties-common \
-                        tzdata && \
+    apt-get install -y --no-install-recommends \
+        apt-utils \
+        software-properties-common \
+        tzdata \
+        gdebi-core \
+        wget \
+        jq \
+        gosu \
+        xvfb \
+        xserver-xorg \
+        winbind \
+        winetricks \
+        wine \
+        ca-certificates && \
     add-apt-repository multiverse && \
     dpkg --add-architecture i386 && \
-    apt update -y && \
-    apt-get upgrade -y 
-RUN useradd -m steam && cd /home/steam && \
+    apt-get update && \
+    apt-get install -y --no-install-recommends \
+        libgl1-mesa-glx:i386 \
+        steam \
+        steamcmd && \
+    ln -s /usr/games/steamcmd /usr/bin/steamcmd && \
+    # Create steam user
+    useradd -m -s /bin/bash steam && \
+    # Setup SteamCMD agreement
     echo steam steam/question select "I AGREE" | debconf-set-selections && \
     echo steam steam/license note '' | debconf-set-selections && \
-    apt purge steam steamcmd && \
-    apt install -y gdebi-core  \
-                   libgl1-mesa-glx:i386 \
-                   wget && \
-    apt install -y steam \
-                   steamcmd && \
-    ln -s /usr/games/steamcmd /usr/bin/steamcmd
-#RUN apt install -y mono-complete
-RUN apt install -y wine \
-                   winbind \
-                   winetricks
-RUN apt install -y xserver-xorg \
-                   xvfb
-RUN apt update -y && apt install -y jq
-RUN rm -rf /var/lib/apt/lists/* && \
-    apt clean && \
-    apt autoremove -y
+    # Clean up
+    apt-get purge -y --auto-remove software-properties-common && \
+    rm -rf /var/lib/apt/lists/* && \
+    apt-get clean
 
-COPY start.sh /start.sh
-RUN sed -i 's/\r$//' /start.sh && \
-    chmod +x /start.sh
-CMD ["/start.sh"]
+# 2. Setup the start script
+COPY --chmod=755 start.sh /start.sh
+RUN sed -i 's/\r$//' /start.sh
+
+# 3. Final configuration
+# We don't define volumes here to avoid issues with permissions at build time
+# The entrypoint will handle ownership of the mounted volumes
+ENTRYPOINT ["/start.sh"]
