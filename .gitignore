@@ -1,5 +1,8 @@
 logs/
 data/
 server/
+test_data/
+test_server/
+test_wineboot.sh
 
 /.vs
