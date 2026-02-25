@@ -1,0 +1,20 @@
+services:
+  vrising:
+    build: 
+      context: .
+    platform: linux/amd64
+    image: vrising-test
+    environment:
+      - TZ=Europe/Paris
+      - SERVERNAME=vrising-TrueOsiris2026
+      - WINEDEBUG=fixme-all
+      - PUID=1000
+      - PGID=1000
+    volumes:
+      - ./test_server:/mnt/vrising/server
+      - ./test_data:/mnt/vrising/persistentdata
+    ports:
+      - '9876:9876/udp'
+      - '9877:9877/udp'
+    restart: unless-stopped
+    network_mode: bridge
