@@ -85,7 +85,7 @@ cleanup_logs
 echo " "
 echo "Updating V-Rising Dedicated Server files..."
 echo " "
-steamcmd +@sSteamCmdForcePlatformType windows +force_install_dir "$s" +login anonymous +app_update 1829350 $beta_arg validate +quit
+steamcmd +@sSteamCmdForcePlatformType windows +force_install_dir "$s" +login anonymous +app_info_update 1 +app_update 1829350 $beta_arg validate +quit
 
 if [ -f "$s/steam_appid.txt" ]; then
     printf "steam_appid: "
@@ -238,6 +238,14 @@ echo "Starting V Rising Dedicated Server with name $SERVERNAME"
 echo " "
 echo "Starting Xvfb"
 Xvfb :0 -screen 0 1024x768x16 &
+
+echo "Waiting for Xvfb to be ready..."
+sleep 2
+
+echo "Initializing Wine prefix..."
+WINEDLLOVERRIDES="mscoree,mshtml=" DISPLAY=:0.0 wineboot --init
+sleep 2
+
 echo "Launching wine64 V Rising"
 echo " "
 
