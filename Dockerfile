@@ -23,6 +23,9 @@ RUN apt-get update && \
     add-apt-repository multiverse && \
     dpkg --add-architecture i386 && \
     apt-get update && \
+    # Setup SteamCMD agreement before installation
+    echo steam steam/question select "I AGREE" | debconf-set-selections && \
+    echo steam steam/license note '' | debconf-set-selections && \
     apt-get install -y --no-install-recommends \
         libgl1-mesa-glx:i386 \
         steam \
@@ -30,9 +33,6 @@ RUN apt-get update && \
     ln -s /usr/games/steamcmd /usr/bin/steamcmd && \
     # Create steam user
     useradd -m -s /bin/bash steam && \
-    # Setup SteamCMD agreement
-    echo steam steam/question select "I AGREE" | debconf-set-selections && \
-    echo steam steam/license note '' | debconf-set-selections && \
     # Clean up
     apt-get purge -y --auto-remove software-properties-common && \
     rm -rf /var/lib/apt/lists/* && \
