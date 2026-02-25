@@ -14,6 +14,9 @@ cleanup() {
     docker stop "$CONTAINER_NAME" >/dev/null 2>&1 || true
     docker rm -f "$CONTAINER_NAME" >/dev/null 2>&1 || true
     if [ -d "$TEST_DIR" ]; then
+        # Use a temporary docker container to run rm -rf as root on the CONTENTS of the directory
+        # bypassing permission issues from files owned by the 'steam' user
+        docker run --rm -v "$TEST_DIR:/test_dir" ubuntu:24.04 bash -c "rm -rf /test_dir/* /test_dir/.* 2>/dev/null || true"
         rm -rf "$TEST_DIR"
     fi
 }
