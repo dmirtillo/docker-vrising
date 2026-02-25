@@ -10,6 +10,6 @@
 
 ## 3. History Purge
 
-- [ ] 3.1 Verify `git-filter-repo` installation
-- [ ] 3.2 Execute `git filter-repo --path logs/ --invert-paths`
-- [ ] 3.3 Verify logs are removed from history and disk
+- [x] 3.1 Verify `git-filter-repo` installation
+- [x] 3.2 Execute `git filter-repo --path logs/ --invert-paths`
+- [x] 3.3 Verify logs are removed from history and disk

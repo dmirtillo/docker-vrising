@@ -2,7 +2,7 @@
 set -e
 
 # Configuration
-IMAGE_NAME="vrising-e2e-test"
+IMAGE_NAME=${1:-"vrising-e2e-test"}
 CONTAINER_NAME="vrising-test-run-$(date +%s)"
 TIMEOUT_SECONDS=600 # 10 minutes
 CHECK_INTERVAL=10
@@ -21,8 +21,12 @@ cleanup() {
 # Ensure cleanup on exit
 trap cleanup EXIT
 
-echo "Building Docker image..."
-docker build -t "$IMAGE_NAME" .
+if [ -z "$1" ]; then
+    echo "No image name provided. Building Docker image locally..."
+    docker build -t "$IMAGE_NAME" .
+else
+    echo "Using provided image: $IMAGE_NAME"
+fi
 
 echo "Creating temporary data directory..."
 TEST_DIR=$(mktemp -d)
