@@ -15,7 +15,7 @@ jobs:
           token: ${{ secrets.PAT_WITH_DELETE_PACKAGES_SCOPE }}
           user: ${{ github.actor }}
           container: vrising-dedicated
-          untagged: true
+          prune-untagged: true
           dry-run: false
 
   prune-dockerhub:

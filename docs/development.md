@@ -31,8 +31,9 @@ To keep our registries clean, we use a scheduled workflow (`.github/workflows/pr
 - **Docker Hub:** Runs an API script to delete old, commit-SHA tagged images, preserving only `latest` and semantic version tags (`vX.X.X`).
 
 ### ⚠️ Required Secrets
-For the automated GHCR pruning to work, a repository secret must be configured:
-- **`PAT_WITH_DELETE_PACKAGES_SCOPE`**: A GitHub Personal Access Token created by an admin with the `delete:packages` scope. The default `GITHUB_TOKEN` does not have permission to delete packages.
+For the automated registry pruning to work, repository secrets must be properly configured:
+- **`PAT_WITH_DELETE_PACKAGES_SCOPE`**: A GitHub Personal Access Token created by an admin with the `delete:packages` scope. The default `GITHUB_TOKEN` does not have permission to delete packages from GHCR.
+- **`DOCKERHUB_TOKEN`**: A Docker Hub Personal Access Token. This token MUST be created with **Read, Write, and Delete** permissions. If it lacks delete permissions, the script will receive a `403 Forbidden` error when attempting to prune old staging tags.
 
 ---
 
