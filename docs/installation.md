@@ -19,6 +19,12 @@ services:
     ports:
       - '9876:9876/udp'
       - '9877:9877/udp'
+    healthcheck:
+      test: ["CMD-SHELL", "nc -z -u 127.0.0.1 $${QUERYPORT:-9877} || exit 1"]
+      interval: 30s
+      timeout: 10s
+      start_period: 120s
+      retries: 3
     restart: unless-stopped
 ```
 
@@ -53,6 +59,12 @@ services:
     ports:
       - '27015:27015/udp' # Game Port
       - '27016:27016/udp' # Query Port
+    healthcheck:
+      test: ["CMD-SHELL", "nc -z -u 127.0.0.1 $${QUERYPORT:-27016} || exit 1"]
+      interval: 30s
+      timeout: 10s
+      start_period: 120s
+      retries: 3
     restart: unless-stopped
 ```
 
@@ -77,6 +89,12 @@ services:
     ports:
       - '27015:27015/udp'
       - '27016:27016/udp'
+    healthcheck:
+      test: ["CMD-SHELL", "nc -z -u 127.0.0.1 $${QUERYPORT:-27016} || exit 1"]
+      interval: 30s
+      timeout: 10s
+      start_period: 120s
+      retries: 3
     restart: unless-stopped
 ```
 
@@ -93,9 +111,7 @@ docker run -d --name='vrising' \
   -v "$(pwd)/persistentdata:/mnt/vrising/persistentdata" \
   -p 9876:9876/udp \
   -p 9877:9877/udp \
-  --entrypoint "/bin/bash" \
-  dmirtillo/vrising-dedicated \
-  -c "sed -i 's/\r//g' /start.sh && exec /bin/bash /start.sh"
+  dmirtillo/vrising-dedicated
 ```
 
 ## Post-Installation

@@ -8,8 +8,8 @@ These variables control the basic identity and networking of your server.
 
 | Variable | Default | Description |
 | :--- | :--- | :--- |
-| `TZ` | `Europe/Brussels` | Timezone for the server logs and scheduling. |
-| `SERVERNAME` | `dmirtillo-V` | The name of your server as it appears in the server list. |
+| `TZ` | `Europe/Rome` | Timezone for the server logs and scheduling. |
+| `SERVERNAME` | `vrising-dedicated` | The name of your server as it appears in the server list. |
 | `WORLDNAME` | `world1` | The name of the world save file. |
 | `GAMEPORT` | `9876` | The UDP port for game traffic. |
 | `QUERYPORT` | `9877` | The UDP port for Steam query traffic. |
@@ -97,6 +97,14 @@ To manage players on your server, you use the `adminlist.txt` and `banlist.txt` 
 3. Add the **Steam64 IDs** of the players you wish to ban.
 4. Restart the container.
 
+## 🩺 Container Healthcheck
+
+The V Rising dedicated server under Wine can take several minutes to generate a new world or load a large save file. To reliably determine when the server is fully ready to accept connections, the Docker image includes a native `HEALTHCHECK`.
+
+The healthcheck performs a UDP ping against the server's Query Port (`QUERYPORT`). 
+
+By default, the healthcheck is configured with a generous `start_period` of 120 seconds to account for the initial load time without prematurely marking the container as unhealthy. This is particularly useful for orchestrating other containers (like an RCON sidecar) that should only start once the server is fully initialized.
+
 ## 📡 RCON (Remote Console)
 
 RCON allows you to send commands to your server without being in-game.
@@ -113,11 +121,48 @@ ports:
   - '25575:25575/tcp' # Ensure you expose the TCP port!
 ```
 
-### Executing Commands
+### Executing Commands (Standalone)
 You don't need to install anything on your host. Use a temporary Docker container to run the [gorcon/rcon-cli](https://github.com/gorcon/rcon-cli):
 
 ```bash
 docker run --rm gorcon/rcon-cli -a 127.0.0.1:25575 -p SuperSecretPassword "announce 'Server is restarting in 5 minutes!'"
+```
+
+### Running an RCON Sidecar (Docker Compose)
+If you prefer to have an RCON client running continuously alongside your server, you can configure an RCON sidecar in your `docker-compose.yml`. This sidecar will automatically wait for the V Rising server to become `healthy` before starting.
+
+```yaml
+services:
+  vrising:
+    image: dmirtillo/vrising-dedicated
+    environment:
+      - SERVERNAME=My RCON Server
+      - HOST_SETTINGS_Rcon__Enabled=true
+      - HOST_SETTINGS_Rcon__Password=SuperSecretPassword
+    ports:
+      - '9876:9876/udp'
+      - '9877:9877/udp'
+      - '25575:25575/tcp'
+    healthcheck:
+      test: ["CMD-SHELL", "nc -z -u 127.0.0.1 $${QUERYPORT:-9877} || exit 1"]
+      interval: 30s
+      timeout: 10s
+      start_period: 120s
+      retries: 3
+
+  rcon:
+    image: outdead/rcon-cli:latest
+    environment:
+      - RCON_HOST=vrising
+      - RCON_PORT=25575
+      - RCON_PASSWORD=SuperSecretPassword
+    depends_on:
+      vrising:
+        condition: service_healthy
+```
+You can then easily execute commands through the sidecar container:
+```bash
+docker compose exec rcon rcon-cli "announce 'Hello World!'"
 ```
 
 ### Useful Commands

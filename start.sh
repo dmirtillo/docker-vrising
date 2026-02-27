@@ -53,7 +53,7 @@ trap 'term_handler' SIGTERM
 
 # Default Environment Variables
 LOGDAYS=${LOGDAYS:-30}
-SERVERNAME=${SERVERNAME:-"dmirtillo-V"}
+SERVERNAME=${SERVERNAME:-"vrising-dedicated"}
 WORLDNAME=${WORLDNAME:-""}
 GAMEPORT=${GAMEPORT:-""}
 QUERYPORT=${QUERYPORT:-""}

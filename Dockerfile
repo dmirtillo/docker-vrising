@@ -60,6 +60,7 @@ RUN add-apt-repository multiverse && \
         winbind \
         libgl1-mesa-dri:i386 \
         libgl1:i386 \
+        netcat-openbsd \
         steam \
         steamcmd && \
     # Setup symlinks
@@ -78,5 +79,8 @@ RUN add-apt-repository multiverse && \
 # Setup the start script
 COPY --chmod=755 start.sh /start.sh
 RUN sed -i 's/\r$//' /start.sh
+
+HEALTHCHECK --interval=30s --timeout=10s --start_period=120s --retries=3 \
+  CMD nc -z -u 127.0.0.1 ${QUERYPORT:-9877} || exit 1
 
 ENTRYPOINT ["/start.sh"]
