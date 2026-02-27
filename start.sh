@@ -85,6 +85,13 @@ cleanup_logs
 echo " "
 echo "Updating V-Rising Dedicated Server files..."
 echo " "
+
+# Phase 1: Update SteamCMD itself to avoid restart loops breaking arguments
+echo "Update SteamCMD..."
+steamcmd +login anonymous +quit
+
+# Phase 2: Install the game
+echo "Installing/Updating V Rising..."
 steamcmd +@sSteamCmdForcePlatformType windows +force_install_dir "$s" +login anonymous +app_info_update 1 +app_update 1829350 $beta_arg validate +quit
 
 if [ -f "$s/steam_appid.txt" ]; then
