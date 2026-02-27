@@ -9,7 +9,7 @@ The recommended way to run the server is using [Docker Compose](https://docs.doc
 ```yaml
 services:
   vrising:
-    image: trueosiris/vrising
+    image: dmirtillo/vrising-dedicated
     # Fix for line endings in start script
     entrypoint: ["/bin/bash", "-c", "sed -i 's/\\r//g' /start.sh && exec /bin/bash /start.sh"]
     environment:
@@ -43,7 +43,7 @@ docker run -d --name='vrising' \
   -p 9876:9876/udp \
   -p 9877:9877/udp \
   --entrypoint "/bin/bash" \
-  trueosiris/vrising \
+  dmirtillo/vrising-dedicated \
   -c "sed -i 's/\r//g' /start.sh && exec /bin/bash /start.sh"
 ```
 

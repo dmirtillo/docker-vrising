@@ -1,20 +1,10 @@
 schema: spec-driven
 
-context:
-  project:
-    name: "docker-vrising"
-    description: "A Dockerized V Rising dedicated server running on Ubuntu with Wine."
-    purpose: "To provide a containerized, easy-to-deploy environment for hosting V Rising dedicated servers."
-  tech_stack:
-    base_image: "Ubuntu 24.04"
-    runtime: "Latest Wine stable release"
-    dependencies:
-      - "SteamCMD"
-      - "Xvfb"
-      - "winetricks"
-    containerization: "Docker"
-    orchestration: "Docker Compose"
-    scripting: "Bash"
+context: |
+  Project: docker-vrising
+  Description: A Dockerized V Rising dedicated server running on Ubuntu 24.04 with Wine.
+  Purpose: To provide a containerized, easy-to-deploy environment for hosting V Rising dedicated servers.
+  Tech Stack: Ubuntu 24.04, Latest Wine stable release, SteamCMD, Xvfb, winetricks, Docker, Docker Compose, Bash.
 
 workflow:
   branching:
@@ -28,14 +18,13 @@ workflow:
     enabled: true
     pattern: "v{version}"
     auto_tag_on_merge: true
+  guidelines:
+    - "Document all changes in the respective files under docs/ directory to maintain clear communication of updates and modifications."
+    - "Update changelog at each main specification change to track the evolution of the project and ensure transparency for users and contributors."
 
-rules:
+constraints:
   - "Ensure all shell scripts (e.g., start.sh) use LF line endings to prevent execution errors in the container."
   - "Maintain compatibility with Wine to ensure the V Rising Windows server executable runs correctly on Linux."
   - "Preserve persistent data (saves, settings) using Docker volumes mounted at /mnt/vrising/persistentdata."
   - "Optimize Docker image size where possible by cleaning up apt caches and temporary files in the same layer."
   - "Expose necessary UDP ports (default 9876, 9877) for game client connectivity."
-  - "Document all changes in the respective files under docs/ directory to maintain clear communication of updates and modifications."
-  - "Update changelog at each main specification change to track the evolution of the project and ensure transparency for users and contributors."
-  - "Use gitflow for feature development, ensuring that all new features are developed in feature branches and merged back into the main branch only after thorough testing and review."
-  - "Tag application release upon merging to main branch to maintain a clear version history and facilitate easy rollbacks if necessary."

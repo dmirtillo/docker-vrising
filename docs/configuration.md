@@ -9,7 +9,7 @@ These variables control the basic identity and networking of your server.
 | Variable | Default | Description |
 | :--- | :--- | :--- |
 | `TZ` | `Europe/Brussels` | Timezone for the server logs and scheduling. |
-| `SERVERNAME` | `trueosiris-V` | The name of your server as it appears in the server list. |
+| `SERVERNAME` | `dmirtillo-V` | The name of your server as it appears in the server list. |
 | `WORLDNAME` | `world1` | The name of the world save file. |
 | `GAMEPORT` | `9876` | The UDP port for game traffic. |
 | `QUERYPORT` | `9877` | The UDP port for Steam query traffic. |
