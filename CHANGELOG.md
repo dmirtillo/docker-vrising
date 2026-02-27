@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2026-02-28]
+
+- Added native Docker `HEALTHCHECK` using a UDP ping to the V Rising Query Port.
+- Added documentation for running a persistent RCON sidecar (`gorcon/rcon-cli`) using Docker Compose.
+- Standardized the default `SERVERNAME` to `vrising-dedicated` across all scripts and configuration examples.
+- Standardized the default timezone (`TZ`) to `Europe/Rome`.
+- Removed legacy `--entrypoint` workaround commands from all documentation examples.
+
 ## [2026-02-27]
 
 - Added automated GitHub Actions workflows to check for Wine and V Rising updates and create Pull Requests.
