@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2026-02-27]
+
+- Optimized Ubuntu 24.04 and Wine environment for improved server stability.
+- Standardized LF line endings for all container-internal scripts to prevent execution errors.
+- Automated Steam license acceptance during Docker build process.
+- Fixed SteamCMD configuration to ensure reliable server installation and updates.
+- Improved CI/CD pipeline with automated E2E testing
+- Standardized project structure and documentation.
+
 ## [image 2026-02-21]
 
 Docker image rebuild + tested on a linux dockerhost (unraid).<br>

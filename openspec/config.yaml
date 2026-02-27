@@ -16,6 +16,19 @@ context:
     orchestration: "Docker Compose"
     scripting: "Bash"
 
+workflow:
+  branching:
+    strategy: gitflow
+    main: main
+    develop: develop
+    feature: feature/*
+    release: release/*
+    hotfix: hotfix/*
+  tagging:
+    enabled: true
+    pattern: "v{version}"
+    auto_tag_on_merge: true
+
 rules:
   - "Ensure all shell scripts (e.g., start.sh) use LF line endings to prevent execution errors in the container."
   - "Maintain compatibility with Wine to ensure the V Rising Windows server executable runs correctly on Linux."
