@@ -4,6 +4,8 @@ All notable changes to this project will be documented in this file.
 
 ## [2026-02-27]
 
+- Added automated GitHub Actions workflows to check for Wine and V Rising updates and create Pull Requests.
+- Updated Dockerfile to use explicit `ARG` version tracking for Wine and V Rising to support automated updates.
 - Optimized Ubuntu 24.04 and Wine environment for improved server stability.
 - Standardized LF line endings for all container-internal scripts to prevent execution errors.
 - Automated Steam license acceptance during Docker build process.

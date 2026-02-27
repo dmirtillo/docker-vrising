@@ -37,6 +37,17 @@ For the automated registry pruning to work, repository secrets must be properly 
 
 ---
 
+## 🤖 Automated Dependency Updates
+
+This project uses custom GitHub Actions to automatically track and propose updates for critical dependencies.
+
+- **Wine (`.github/workflows/update-wine.yml`)**: Runs monthly. It queries the Ubuntu Noble WineHQ repository for the latest `winehq-stable` version and proposes a PR to update the `WINE_VERSION` in the `Dockerfile`.
+- **V Rising (`.github/workflows/update-vrising.yml`)**: Runs weekly. It queries the SteamCMD Web API for the latest `buildid` of the V Rising Dedicated Server and proposes a PR to update the `VRISING_BUILD_ID` in the `Dockerfile`.
+
+These automated PRs ensure the Docker image stays up-to-date with upstream changes without manual tracking. Merging these PRs will automatically trigger the standard `docker-image.yml` build pipeline.
+
+---
+
 ## 🏗️ OpenSpec Artifact-Driven Workflow
 
 This project uses **OpenSpec**, an experimental artifact-driven workflow, to manage significant changes. This ensures every change is deliberately proposed, designed, and specified before any code is written.

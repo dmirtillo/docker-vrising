@@ -20,13 +20,14 @@ ENV LANG=en_US.UTF-8 \
 
 # 2. Setup WineHQ and i386
 FROM base AS wine-setup
+ARG WINE_VERSION="10.0.0.0~noble-1"
 RUN mkdir -pm755 /etc/apt/keyrings && \
     wget -O /etc/apt/keyrings/winehq-archive.key https://dl.winehq.org/wine-builds/winehq.key && \
     wget -NP /etc/apt/sources.list.d/ https://dl.winehq.org/wine-builds/ubuntu/dists/noble/winehq-noble.sources && \
     dpkg --add-architecture i386 && \
     apt-get update && \
     apt-get install -y --no-install-recommends \
-        winehq-stable && \
+        winehq-stable=${WINE_VERSION} && \
     rm -rf /var/lib/apt/lists/*
 
 # 3. Install latest winetricks from source
@@ -42,6 +43,7 @@ RUN apt-get update && \
 
 # 4. Install remaining dependencies and SteamCMD
 FROM winetricks-setup AS final
+ARG VRISING_BUILD_ID="8148398"
 RUN add-apt-repository multiverse && \
     apt-get update && \
     echo steam steam/question select "I AGREE" | debconf-set-selections && \
