@@ -9,7 +9,7 @@ on:
 
 permissions:
   packages: write
-  contents: read
+  contents: write
 
 env:
   GHCR_IMAGE: ghcr.io/${{ github.repository }}
@@ -96,3 +96,13 @@ jobs:
           
           docker push $DOCKERHUB_REPO:latest
           docker push $DOCKERHUB_REPO:$TAG_NAME
+
+      - name: Extract Release Notes
+        id: extract_notes
+        run: |
+          awk '/^## \[/ { if (p) exit; p=1; next } p' CHANGELOG.md > release_notes.md
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          body_path: release_notes.md
