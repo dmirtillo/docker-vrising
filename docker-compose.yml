@@ -2,8 +2,8 @@ services:
   vrising:
     image: dmirtillo/vrising-dedicated
     environment:
-      - TZ=Europe/Paris
-      - SERVERNAME=vrising-TrueOsiris2026
+      - TZ=Europe/Rome
+      - SERVERNAME=vrising-dedicated-2026
       - WINEDEBUG=fixme-all
       - PUID=1000
       - PGID=1000

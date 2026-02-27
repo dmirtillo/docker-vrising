@@ -15,6 +15,20 @@ To ensure your server data survives a container restart, you must map the follow
 - **Disk Space**: The initial server download takes several GB. Ensure your host machine has sufficient space.
 - **Backups**: We recommend backing up your `persistentdata/Saves` directory regularly.
 
+## 🕒 Automated Backups (Linux)
+
+You can use a simple `cron` job on your host machine to automate backups of your world saves.
+
+1. Open your host's crontab:
+   ```bash
+   crontab -e
+   ```
+2. Add the following line to create a compressed backup at 3:00 AM every day:
+   ```bash
+   0 3 * * * tar -czf /path/to/your/backups/vrising_$(date +\%Y\%m\%d).tar.gz /path/to/your/persistentdata/Saves >/dev/null 2>&1
+   ```
+*Replace `/path/to/your/backups` and `/path/to/your/persistentdata` with your actual absolute paths.*
+
 ## Migrating a Local Save
 
 If you want to move a save from your local PC to your dedicated server:

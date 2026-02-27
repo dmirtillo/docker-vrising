@@ -60,16 +60,71 @@ You can also edit the JSON files directly on your host machine. They are located
 2. Local files in `/persistentdata`
 3. Default files in `/server` (reset on every Steam update)
 
-## RCON (Optional)
+## 📁 Understanding Your Data
 
-To enable RCON, you can use the dynamic settings above or manually add the following block to your `ServerHostSettings.json`:
+When you run the Docker container, it creates folders on your host machine to store game files and your personal data.
 
-```json
-"Rcon": {
-  "Enabled": true,
-  "Password": "docker",
-  "Port": 25575
-}
+```text
+Your Host Machine (Local)             Docker Container (Internal)
+┌─────────────────────────┐          ┌─────────────────────────┐
+│ ./server/               │ ───────▶ │ /mnt/vrising/server/    │ (Game Binaries - Automated)
+├─────────────────────────┤          ├─────────────────────────┤
+│ ./persistentdata/       │ ───────▶ │ /mnt/.../persistentdata/│ (YOUR DATA - BACK THIS UP!)
+│  ├── Settings/          │          │                         │
+│  │   ├── adminlist.txt  │          │                         │
+│  │   └── *.json         │          │                         │
+│  └── Saves/             │          │                         │
+│      └── v3/world1/     │          │                         │
+└─────────────────────────┘          └─────────────────────────┘
 ```
 
-To communicate using the RCON protocol, we recommend using the [RCON CLI](https://github.com/gorcon/rcon-cli) by gorcon.
+**Note:** Never modify files in the `./server` folder manually. All configuration and saves live in `./persistentdata`.
+
+## 👑 Admins & Bans
+
+To manage players on your server, you use the `adminlist.txt` and `banlist.txt` files located in your host's `./persistentdata/Settings/` directory.
+
+### Adding Admins
+1. Navigate to `./persistentdata/Settings/` on your host.
+2. Create or edit `adminlist.txt`.
+3. Add the **Steam64 IDs** (one per line). Use a tool like [steamid.io](https://steamid.io) to find them.
+4. Restart the container.
+5. In-game, open the console (`~`) and type `adminauth`.
+
+### Banning Players
+1. Navigate to `./persistentdata/Settings/` on your host.
+2. Create or edit `banlist.txt`.
+3. Add the **Steam64 IDs** of the players you wish to ban.
+4. Restart the container.
+
+## 📡 RCON (Remote Console)
+
+RCON allows you to send commands to your server without being in-game.
+
+### Enabling RCON (Recommended Method)
+Add these environment variables to your `docker-compose.yml`:
+
+```yaml
+environment:
+  - HOST_SETTINGS_Rcon__Enabled=true
+  - HOST_SETTINGS_Rcon__Password=SuperSecretPassword
+  - HOST_SETTINGS_Rcon__Port=25575
+ports:
+  - '25575:25575/tcp' # Ensure you expose the TCP port!
+```
+
+### Executing Commands
+You don't need to install anything on your host. Use a temporary Docker container to run the [gorcon/rcon-cli](https://github.com/gorcon/rcon-cli):
+
+```bash
+docker run --rm gorcon/rcon-cli -a 127.0.0.1:25575 -p SuperSecretPassword "announce 'Server is restarting in 5 minutes!'"
+```
+
+### Useful Commands
+| Command | Description |
+| :--- | :--- |
+| `announce <message>` | Send a global message to all players. |
+| `kick <character name>` | Kick a player from the server. |
+| `banuser <character name>` | Ban a player from the server. |
+| `unban <steam id>` | Unban a player. |
+| `save` | Force an immediate world save. |

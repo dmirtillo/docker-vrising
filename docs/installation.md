@@ -10,10 +10,8 @@ The recommended way to run the server is using [Docker Compose](https://docs.doc
 services:
   vrising:
     image: dmirtillo/vrising-dedicated
-    # Fix for line endings in start script
-    entrypoint: ["/bin/bash", "-c", "sed -i 's/\\r//g' /start.sh && exec /bin/bash /start.sh"]
     environment:
-      - TZ=Europe/Paris
+      - TZ=Europe/Rome
       - SERVERNAME=vrising-dedicated
     volumes:
       - ./server:/mnt/vrising/server
@@ -29,6 +27,59 @@ services:
 docker-compose up -d
 ```
 
+## 🎮 Configuration Sets (Recipes)
+
+Not sure what settings to use? Pick the `docker-compose.yml` that best fits how you want to play. These examples use the default V Rising ports (27015/27016) which are common in community guides.
+
+### Option A: Standard PvE (Co-op with Friends)
+Perfect for a private server where you work together to build a castle and defeat bosses.
+
+```yaml
+services:
+  vrising:
+    image: dmirtillo/vrising-dedicated
+    environment:
+      - SERVERNAME="My Cozy Vampire Castle"
+      - WORLDNAME="world1"
+      # Secure the server so only friends can join
+      - HOST_SETTINGS_Password=secretblood
+      # Set to PvE (Player vs Environment)
+      - GAME_SETTINGS_GameModeType=PvE
+      # Quality of Life: Allow teleporting with resources
+      - GAME_SETTINGS_TeleportBoundItems=false
+    volumes:
+      - ./server:/mnt/vrising/server
+      - ./persistentdata:/mnt/vrising/persistentdata
+    ports:
+      - '27015:27015/udp' # Game Port
+      - '27016:27016/udp' # Query Port
+    restart: unless-stopped
+```
+
+### Option B: Standard PvP (Competitive)
+A public server focused on clan warfare and raiding.
+
+```yaml
+services:
+  vrising:
+    image: dmirtillo/vrising-dedicated
+    environment:
+      - SERVERNAME="Blood & Glory [PvP]"
+      - WORLDNAME="pvp_world1"
+      # Ensure it shows up on the public server list
+      - HOST_SETTINGS_ListOnSteam=true
+      - HOST_SETTINGS_ListOnEOS=true
+      # Use the official Standard PvP preset
+      - GAME_SETTINGS_Preset=StandardPvP
+    volumes:
+      - ./server:/mnt/vrising/server
+      - ./persistentdata:/mnt/vrising/persistentdata
+    ports:
+      - '27015:27015/udp'
+      - '27016:27016/udp'
+    restart: unless-stopped
+```
+
 ## Docker CLI
 
 If you prefer using the Docker CLI directly:
@@ -36,7 +87,7 @@ If you prefer using the Docker CLI directly:
 ```bash
 docker run -d --name='vrising' \
   --restart=unless-stopped \
-  -e TZ="Europe/Paris" \
+  -e TZ="Europe/Rome" \
   -e SERVERNAME="vrising-dedicated" \
   -v "$(pwd)/server:/mnt/vrising/server" \
   -v "$(pwd)/persistentdata:/mnt/vrising/persistentdata" \

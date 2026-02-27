@@ -6,7 +6,7 @@ services:
     image: vrising-test
     environment:
       - TZ=Europe/Paris
-      - SERVERNAME=vrising-TrueOsiris2026
+      - SERVERNAME=vrising-dedicated-2026
       - WINEDEBUG=fixme-all
       - PUID=1000
       - PGID=1000

@@ -1,5 +1,5 @@
 FROM --platform=linux/amd64 ubuntu:24.04 AS base
-LABEL maintainer="Tim Chaubet"
+LABEL maintainer="Davide Mirtillo"
 ARG DEBIAN_FRONTEND="noninteractive"
 
 # 1. Install base dependencies and setup locales

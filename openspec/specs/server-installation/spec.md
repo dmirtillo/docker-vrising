@@ -20,3 +20,11 @@ The system SHALL handle SteamCMD self-updates without interrupting the installat
 - **WHEN** `steamcmd` requires an update
 - **THEN** the update is performed in a separate execution phase
 - **AND** the subsequent installation phase proceeds with the correct platform configuration
+
+### Requirement: Pre-configured Playstyle Templates
+The server installation documentation SHALL offer multiple pre-configured Docker Compose examples based on the desired playstyle, rather than a single generic example.
+
+#### Scenario: Deploying a PvE Server
+- **WHEN** the user copies the PvE template
+- **THEN** the server starts with `GAME_SETTINGS_GameModeType=PvE` and appropriate standard ports configured
+
