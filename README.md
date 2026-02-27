@@ -29,6 +29,7 @@ Explore our guides to get your server up and running quickly and securely.
 - 🌐 **[Networking & Ports](docs/networking.md)** — Port forwarding, server list visibility, and custom port configuration.
 - 💾 **[Data & Save Management](docs/data-management.md)** — How volumes work, performing backups, and migrating local saves to your server.
 - 🔧 **[Troubleshooting](docs/troubleshooting.md)** — Solutions for common errors, Windows host issues, and log explanations.
+- 🛠️ **[Development & Contributing](docs/development.md)** — CI/CD pipeline, automated pruning secrets, and the OpenSpec workflow.
 - 📜 **[Changelog](CHANGELOG.md)** — Keep track of the latest updates and bug fixes.
 
 ---

@@ -1,18 +1,4 @@
-# CI Publishing
-
-## Purpose
-TBD: Ensure stable automation for producing multi-stage CI pipelines and pushing tagged releases to Docker Hub.
-
-## Requirements
-
-### Requirement: Multi-Stage CI Pipeline
-The GitHub Actions workflow SHALL be separated into consecutive `build`, `test`, and `publish` jobs.
-- The `test` job must `needs: build`.
-- The `publish` job must `needs: test`.
-
-#### Scenario: Workflow execution
-- **WHEN** the CI pipeline runs
-- **THEN** the `build` job executes first, followed by `test`, and optionally `publish` if conditions are met.
+## MODIFIED Requirements
 
 ### Requirement: Docker Hub Publishing
 The pipeline SHALL automatically push successful images to Docker Hub (`dmirtillo/vrising-dedicated`).
@@ -27,6 +13,8 @@ The pipeline SHALL automatically push successful images to Docker Hub (`dmirtill
 #### Scenario: Pull request or regular commit execution
 - **WHEN** the pipeline runs on a pull request or a standard commit to the `main` branch
 - **THEN** the `publish` job is skipped and no images are pushed to Docker Hub
+
+## ADDED Requirements
 
 ### Requirement: Automated Registry Pruning
 The system SHALL have an automated scheduled workflow to prune temporary staging images from GitHub Container Registry (GHCR) and Docker Hub.
