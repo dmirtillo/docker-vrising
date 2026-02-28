@@ -39,9 +39,9 @@ Thx [laerdev](https://github.com/laerdev) for the fix.<br>
 
 ## [2024-05-16] 
 
-- Merged with [pull65](https://github.com/dmirtillo/docker-vrising/pull/65) from [Killerherts](https://github.com/killerherts).<br>
+- Merged with [pull65](https://github.com/TrueOsiris/docker-vrising/pull/65) from [Killerherts](https://github.com/killerherts).<br>
   Logs older than 30 days are cleaned up on server start.
-- Merged with [pull52](https://github.com/dmirtillo/docker-vrising/pull/52) from [Diyagi](https://github.com/diyagi).<br>
+- Merged with [pull52](https://github.com/TrueOsiris/docker-vrising/pull/52) from [Diyagi](https://github.com/diyagi).<br>
   Previous container version can still be grabbed via [dmirtillo/vrising-dedicated:2.0](https://hub.docker.com/layers/dmirtillo/vrising-dedicated/2.0/images/sha256-b9142d6f653685c92e25745f48cd205a1ffc7ed4aedef19011b03ab2a03a33c6?context=repo)<br>
   Main fixes are: clean shutdown & complete log to container log. Kudos!
 - Added date to the logfile name, so per server launch, a logfile will be created. For now, they will not be automatically cleaned up.
