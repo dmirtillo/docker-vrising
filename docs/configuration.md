@@ -151,7 +151,7 @@ services:
       retries: 3
 
   rcon:
-    image: outdead/rcon-cli:latest
+    image: itzg/rcon-cli:latest
     environment:
       - RCON_HOST=vrising
       - RCON_PORT=25575
