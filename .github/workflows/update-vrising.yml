@@ -25,7 +25,7 @@ jobs:
           sed -i "s/ARG VRISING_BUILD_ID=\".*\"/ARG VRISING_BUILD_ID=\"$LATEST_BUILD\"/" Dockerfile
 
       - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v6
+        uses: peter-evans/create-pull-request@v8
         with:
           commit-message: "chore(deps): update v rising build to ${{ steps.vrising_build.outputs.latest }}"
           title: "Update V Rising Build ID to ${{ steps.vrising_build.outputs.latest }}"
