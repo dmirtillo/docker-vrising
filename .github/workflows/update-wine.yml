@@ -33,7 +33,7 @@ jobs:
           sed -i "s/ARG WINE_VERSION=\".*\"/ARG WINE_VERSION=\"$LATEST_WINE\"/" Dockerfile
 
       - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v6
+        uses: peter-evans/create-pull-request@v8
         with:
           commit-message: "chore(deps): update wine to ${{ steps.wine_version.outputs.latest }}"
           title: "Update Wine to ${{ steps.wine_version.outputs.latest }}"
