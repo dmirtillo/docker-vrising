@@ -1,4 +1,4 @@
-FROM --platform=linux/amd64 ubuntu:24.04 AS base
+FROM --platform=linux/amd64 ubuntu:26.04 AS base
 LABEL maintainer="Davide Mirtillo"
 ARG DEBIAN_FRONTEND="noninteractive"
 
